@@ -1,0 +1,1064 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職福會長期適用付款制度簡報</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+        /* === THEME VARIABLES === */
+        :root {
+            --stage-bg: #f5f9ff;
+            --slide-bg: #ffffff;
+            --ink: #112033;
+            --muted: #52677f;
+            --line: #d7e3f3;
+            --soft: #eef6ff;
+            --panel: rgba(255, 255, 255, 0.88);
+            --blue: #1463ff;
+            --cyan: #02a6c9;
+            --green: #0a8f70;
+            --amber: #b86b00;
+            --red: #b82e36;
+            --shadow: 0 26px 70px rgba(18, 60, 110, 0.14);
+            --font-main: "Noto Sans TC", sans-serif;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* ===========================================
+           FIXED 16:9 STAGE: MANDATORY BASE STYLES
+           Include this ENTIRE file in every presentation.
+           Slides are authored at 1920×1080 and scaled as a whole.
+           =========================================== */
+
+        /* 1. Lock the browser viewport */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        /* 2. Full-window deck viewport */
+        .deck-viewport {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            background: var(--stage-bg, #000);
+        }
+
+        /* 3. Fixed 16:9 design canvas.
+           JavaScript sets transform: translate(...) scale(...). */
+        .deck-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            transform-origin: 0 0;
+            background: var(--slide-bg, #fff);
+        }
+
+        /* 4. Slides stack inside the fixed stage.
+           Content must be laid out at 1920×1080, not reflowed per device. */
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            display: block;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            background: var(--slide-bg, #fff);
+        }
+
+        .slide.active,
+        .slide.visible {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        /* 5. Keep media inside authored slide bounds */
+        img,
+        video,
+        canvas,
+        svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* 6. Presentation chrome stays outside the slide design system */
+        .deck-controls {
+            position: fixed;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        /* 7. Print one fixed-size slide per page */
+        @media print {
+            html,
+            body {
+                width: 1920px;
+                height: auto;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-viewport {
+                position: static;
+                overflow: visible;
+                background: #fff;
+            }
+
+            .deck-stage {
+                position: static;
+                width: auto;
+                height: auto;
+                transform: none !important;
+                background: none;
+            }
+
+            .slide {
+                position: relative;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                width: 1920px;
+                height: 1080px;
+                break-after: page;
+                page-break-after: always;
+            }
+
+            .slide:last-child {
+                break-after: auto;
+                page-break-after: auto;
+            }
+
+            .deck-controls {
+                display: none !important;
+            }
+        }
+
+        /* 8. Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+        }
+
+        /* === BASE PRESENTATION STYLE === */
+        body {
+            font-family: var(--font-main);
+            color: var(--ink);
+            font-weight: 800;
+        }
+
+        .slide {
+            padding: 54px 62px 44px;
+            background:
+                radial-gradient(circle at 84% 8%, rgba(20, 99, 255, 0.14), transparent 24%),
+                radial-gradient(circle at 8% 92%, rgba(2, 166, 201, 0.12), transparent 28%),
+                linear-gradient(90deg, rgba(20, 99, 255, 0.045) 1px, transparent 1px),
+                linear-gradient(0deg, rgba(20, 99, 255, 0.045) 1px, transparent 1px),
+                #ffffff;
+            background-size: auto, auto, 48px 48px, 48px 48px, auto;
+        }
+
+        .slide::before {
+            content: "";
+            position: absolute;
+            inset: 22px;
+            border: 2px solid rgba(20, 99, 255, 0.14);
+            pointer-events: none;
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            left: 62px;
+            right: 62px;
+            top: 168px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--blue), rgba(2, 166, 201, 0.55), transparent);
+            pointer-events: none;
+        }
+
+        /* === HEADER === */
+        .header {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: start;
+            z-index: 2;
+        }
+
+        .kicker {
+            margin: 0 0 10px;
+            font-size: 28px;
+            line-height: 1.15;
+            color: var(--blue);
+            letter-spacing: 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 70px;
+            line-height: 1.12;
+            letter-spacing: 0;
+            font-weight: 900;
+        }
+
+        .header-note {
+            width: 390px;
+            padding: 22px 26px;
+            border-left: 8px solid var(--blue);
+            background: rgba(238, 246, 255, 0.86);
+            box-shadow: var(--shadow);
+            font-size: 29px;
+            line-height: 1.35;
+            color: var(--ink);
+        }
+
+        /* === MAIN GRID === */
+        .main-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 650px 1fr;
+            gap: 28px;
+            margin-top: 48px;
+            height: 760px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 2px solid var(--line);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+        }
+
+        .panel-title {
+            margin: 0 0 18px;
+            font-size: 36px;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .panel-subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 25px;
+            line-height: 1.35;
+        }
+
+        /* === DECISION FLOW === */
+        .flow-panel,
+        .policy-panel {
+            padding: 30px;
+        }
+
+        .flow-steps {
+            display: grid;
+            gap: 17px;
+            margin-top: 25px;
+        }
+
+        .flow-step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 64px 1fr;
+            gap: 18px;
+            align-items: center;
+            min-height: 102px;
+            padding: 18px;
+            border: 2px solid #dce9f9;
+            background: #ffffff;
+        }
+
+        .step-no {
+            display: grid;
+            place-items: center;
+            width: 64px;
+            height: 64px;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--cyan));
+            font-size: 29px;
+            font-weight: 900;
+        }
+
+        .step-text strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 30px;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .step-text span {
+            display: block;
+            color: var(--muted);
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        /* === POLICY SUMMARY === */
+        .policy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-top: 34px;
+            align-content: start;
+        }
+
+        .policy-card {
+            min-height: 238px;
+            padding: 28px;
+            border: 2px solid #d8e6f7;
+            background: #ffffff;
+        }
+
+        .policy-card strong {
+            display: block;
+            margin-bottom: 14px;
+            color: var(--blue);
+            font-size: 37px;
+            line-height: 1.12;
+            font-weight: 900;
+        }
+
+        .policy-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 30px;
+            line-height: 1.35;
+            font-weight: 800;
+        }
+
+        .page-hint {
+            display: block;
+            margin-top: 30px;
+            color: var(--muted);
+            font-size: 28px;
+            line-height: 1.3;
+        }
+
+        /* === SCENARIO PAGE === */
+        .scenario-page .scenario-layout {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 620px 1fr;
+            gap: 34px;
+            height: 800px;
+            margin-top: 48px;
+        }
+
+        .scenario-page h2 {
+            margin: 0;
+            font-size: 68px;
+            line-height: 1.12;
+            font-weight: 900;
+        }
+
+        .scenario-index {
+            display: inline-grid;
+            place-items: center;
+            width: 132px;
+            height: 132px;
+            margin-bottom: 34px;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--blue), var(--cyan));
+            font-size: 52px;
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .scenario-lead {
+            margin-top: 28px;
+            color: var(--muted);
+            font-size: 36px;
+            line-height: 1.35;
+            font-weight: 800;
+        }
+
+        .scenario-detail {
+            padding: 38px;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 34px;
+        }
+
+        .metric {
+            padding: 24px 26px;
+            background: var(--soft);
+            border: 2px solid #dce9f9;
+        }
+
+        .metric small {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--muted);
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .metric strong {
+            display: block;
+            color: var(--blue);
+            font-size: 44px;
+            line-height: 1.1;
+            font-weight: 900;
+        }
+
+        .detail-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 16px;
+            align-content: start;
+        }
+
+        .detail-list li {
+            position: relative;
+            padding-left: 48px;
+            font-size: 31px;
+            line-height: 1.35;
+            color: var(--ink);
+        }
+
+        .detail-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 18px;
+            height: 18px;
+            background: var(--blue);
+        }
+
+        .risk-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 86px;
+            margin-top: 34px;
+            padding: 16px 24px;
+            color: #ffffff;
+            background: var(--amber);
+            font-size: 30px;
+            line-height: 1.25;
+            font-weight: 900;
+        }
+
+        .page-count {
+            position: absolute;
+            right: 62px;
+            bottom: 44px;
+            z-index: 4;
+            color: var(--muted);
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        /* === HERO SLIDE === */
+        .hero-slide {
+            padding: 0;
+            background: #05080d;
+        }
+
+        .hero-slide::before,
+        .hero-slide::after {
+            content: none;
+        }
+
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-shade {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 50% 46%, rgba(255, 214, 117, 0.16), transparent 30%),
+                linear-gradient(90deg, rgba(3, 8, 20, 0.72), rgba(3, 8, 20, 0.18), rgba(3, 8, 20, 0.72));
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 214, 117, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 214, 117, 0.10) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(circle at 50% 50%, black, transparent 72%);
+            opacity: 0.45;
+        }
+
+        .hero-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 820px;
+            height: 820px;
+            border: 2px solid rgba(255, 214, 117, 0.34);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 52px rgba(255, 214, 117, 0.18), inset 0 0 42px rgba(255, 214, 117, 0.12);
+        }
+
+        .hero-ring::before,
+        .hero-ring::after {
+            content: "";
+            position: absolute;
+            inset: 84px;
+            border: 1px solid rgba(255, 214, 117, 0.22);
+            border-radius: 50%;
+        }
+
+        .hero-ring::after {
+            inset: 178px;
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+        .hero-title {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            color: #f5c45d;
+            font-size: 108px;
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: 0;
+            text-align: center;
+            text-shadow: 0 0 24px rgba(255, 208, 92, 0.52), 0 10px 42px rgba(0, 0, 0, 0.58);
+            white-space: nowrap;
+        }
+
+        /* === COVER SLIDE === */
+        .cover-slide {
+            padding: 0;
+            background:
+                linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.34) 36%, rgba(0, 0, 0, 0.02) 68%),
+                url("https://i.urusai.cc/oP8mx.jpg") center center / cover no-repeat;
+        }
+
+        .cover-slide::before,
+        .cover-slide::after {
+            content: none;
+        }
+
+        .cover-title {
+            position: absolute;
+            left: 108px;
+            top: 500px;
+            width: 720px;
+            padding: 44px 52px 50px;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.24);
+            border-left: 14px solid #ffffff;
+            font-size: 70px;
+            line-height: 1.22;
+            font-weight: 900;
+            letter-spacing: 0;
+            text-shadow: 0 6px 28px rgba(0, 0, 0, 0.48);
+        }
+
+        /* === Q&A SLIDE === */
+        .qa-slide {
+            padding: 0;
+            background: url("https://i.urusai.cc/N8CTm.jpg") center center / cover no-repeat;
+        }
+
+        .qa-slide::before,
+        .qa-slide::after {
+            content: none;
+        }
+
+        .qa-title {
+            position: absolute;
+            left: 210px;
+            top: 440px;
+            color: #0b2a4a;
+            font-size: 150px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 0;
+        }
+
+        /* === ACTION BAR === */
+        .nav-controls {
+            position: fixed;
+            right: 24px;
+            bottom: 22px;
+            z-index: 1002;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            min-height: 46px;
+            padding: 0 16px;
+            border: 1px solid rgba(20, 99, 255, 0.28);
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.92);
+            font: 800 16px/1 var(--font-main);
+            cursor: pointer;
+            box-shadow: 0 10px 28px rgba(18, 60, 110, 0.16);
+        }
+
+        .tool-btn:hover,
+        .tool-btn:focus-visible {
+            border-color: var(--blue);
+            outline: none;
+        }
+
+        .tool-btn:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .deck-controls {
+            display: none;
+        }
+
+        /* === EDIT MODE === */
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 86px;
+            height: 86px;
+            z-index: 10000;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        [contenteditable="true"] {
+            outline: 4px solid rgba(20, 99, 255, 0.35);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        /* === ANIMATIONS === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.55s var(--ease-out-expo), transform 0.55s var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .reveal:nth-child(3) { transition-delay: 0.14s; }
+        .reveal:nth-child(4) { transition-delay: 0.2s; }
+
+        .pulse-line {
+            position: absolute;
+            top: 170px;
+            left: 62px;
+            width: 190px;
+            height: 3px;
+            z-index: 4;
+            background: #ffffff;
+            box-shadow: 0 0 18px rgba(20, 99, 255, 0.8);
+            animation: scan 3.8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateX(1650px); opacity: 0; }
+        }
+
+        @keyframes heroSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hero-ring {
+            animation: heroSpin 18s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage" aria-label="職福會長期適用付款制度互動簡報">
+            <section class="slide hero-slide active visible" aria-label="職工福利委員會 HERO 頁">
+                <video class="hero-video" src="https://i.urusai.cc/K5edo.mp4" autoplay muted loop playsinline></video>
+                <div class="hero-shade" aria-hidden="true"></div>
+                <div class="hero-grid" aria-hidden="true"></div>
+                <div class="hero-ring" aria-hidden="true"></div>
+                <h1 class="hero-title" contenteditable="false">職工福利委員會</h1>
+            </section>
+
+            <section class="slide cover-slide" aria-label="活動費用付款方式封面">
+                <h1 class="cover-title reveal" contenteditable="false">職工福利委員會｜<br>活動費用付款方式</h1>
+            </section>
+        </main>
+    </div>
+
+    <div class="edit-hotzone" aria-hidden="true"></div>
+    <button class="tool-btn edit-toggle" id="editToggle" type="button" title="編輯模式 E">編輯</button>
+    <nav class="nav-controls" aria-label="簡報翻頁">
+        <button class="tool-btn" id="prevSlide" type="button">← 前一頁</button>
+        <button class="tool-btn" id="nextSlide" type="button">下一頁 →</button>
+    </nav>
+
+    <script>
+        /* === DATA BLOCK === */
+        const scenarios = [
+            {
+                id: "s1",
+                title: "小額生日活動代墊",
+                meta: "13,000 元",
+                amount: "小額",
+                payment: "員工代墊",
+                lead: "一般小額生日活動由福委或員工先行墊付，活動結束後再送件核銷。",
+                points: ["墊付款超過一定金額時，是否應先取得地區主管、職福會主席或財務部核准？", "財務部能否將員工代墊款列為優先付款案件？", "送件完成後，是否可設定 7 個工作日內付款？"],
+                risk: "討論目標：代墊金額事前核准與付款時限要如何訂定？"
+            },
+            {
+                id: "s2",
+                title: "金額超過個人墊付能力",
+                meta: "45,000 元",
+                amount: "中額",
+                payment: "預付／暫付款",
+                lead: "70 人慶生活動預估 45,000 元，店家要求取餐當日一次結清且不接受活動後匯款。",
+                points: ["公司是否可以事前將款項匯給店家？", "若店家只能當日刷卡或現金付款，應由誰負責付款？", "是否建立職福會或福委會專用付款方式？", "若建立活動備用金或暫付款，差額應於幾日內繳回？"],
+                risk: "討論目標：高額活動款項是否要建立暫付款或專用付款工具？"
+            },
+            {
+                id: "s3",
+                title: "預定活動支付訂金",
+                meta: "訂金 12,000 元",
+                amount: "二成訂金",
+                payment: "預付款",
+                lead: "提前兩個月安排聚餐，餐廳要求先支付二成訂金，正式發票須活動完成後才開立。",
+                points: ["財務部能否依核准簽呈、餐廳報價單及訂位資料，直接匯訂金？", "財務付款是否一定要先取得發票，或可先列暫付款或預付款？", "店家開立的訂金收據應具備哪些資料？", "訂金付款報核銷作業流程？"],
+                risk: "討論目標：訂金付款的文件、會計處理方式？"
+            },
+            {
+                id: "s4",
+                title: "臨時聚餐時間不足",
+                meta: "25,000 元",
+                amount: "急件",
+                payment: "急件付款",
+                lead: "因工地業務繁忙，星期三才確認星期五晚上聚餐，預估費用 25,000 元，正常付款流程已來不及完成。",
+                points: ["急件可否同意福委或員工墊付 25,000 元？", "急件代墊是否仍需事前核准？", "若沒有福委或員工願意墊付，財務部是否可建立急件付款時段？", "是否需要定義緊急支付程序？"],
+                risk: "討論目標：急件付款如何兼顧活動需求與財務控管？"
+            },
+            {
+                id: "s5",
+                title: "吃到飽餐廳當日尾款",
+                meta: "尾款 42,000 元",
+                amount: "尾款",
+                payment: "暫付款／刷卡",
+                lead: "聚餐費用 50,000 元，財務已支付訂金 8,000 元，活動當日尚須支付尾款 42,000 元。",
+                points: ["財務既已支付訂金，尾款是否同意先由福委或員工墊付？", "若員工信用卡額度不足，應如何處理？", "是否可以在活動前依預估人數，由財務支付暫付款給指定福委？", "活動當天人數增加造成超支，誰有權核准？"],
+                risk: "討論目標：尾款當日付清時，付款人、額度與超支核准如何處理？"
+            },
+            {
+                id: "s6",
+                title: "餐廳要求三日內付款",
+                meta: "80,000 元",
+                amount: "高額",
+                payment: "限期匯款",
+                lead: "餐廳同意活動完成後三日內匯款，但公司財務固定付款週期可能需要兩週。",
+                points: ["財務部能否配合三日內完成急件付款？", "若不能，福委或同仁是否可先行付款？", "訂餐前是否應先由財務部與餐廳確認付款條件？"],
+                risk: "討論目標：對外付款期限承諾應由誰確認與負責？"
+            },
+            {
+                id: "s7",
+                title: "四地共同尾牙尾款",
+                meta: "500,000 元",
+                amount: "大型活動",
+                payment: "統一窗口",
+                lead: "台北、桃園、台中及高雄四地共同辦理尾牙，總費用 500,000 元。",
+                points: ["尾牙屬四地共同辦理，付款是否應由主席或指定總窗口統一處理？", "能否由主辦地區福委先墊付 100,000 元訂金？", "尾款是否能在2周內匯款？", "活動當天臨時增加費用，應由誰現場核准？"],
+                risk: "討論目標：大型共同活動的付款窗口與現場核准權限如何設定？"
+            },
+            {
+                id: "s8",
+                title: "店家發票不符規定",
+                meta: "收據風險",
+                amount: "不分金額",
+                payment: "憑證管制",
+                lead: "小型店家付款後才發現只能提供普通收據。",
+                points: ["該筆費用是否可以核銷？", "小規模營業人開立的免用統一發票收據，應具備哪些資料？", "是否應在訂購前先確認店家能否開立合格憑證？", "財務部是否應製作店家開立憑證範例，提供各區福委使用？"],
+                risk: "討論目標：憑證不完整時的核銷標準與事前確認機制如何訂定？"
+            }
+        ];
+
+        /* === SCENARIO SLIDE RENDERING === */
+        function renderScenarioSlides() {
+            const stage = document.getElementById("deckStage");
+            scenarios.forEach((item, index) => {
+                const slide = document.createElement("section");
+                slide.className = "slide scenario-page";
+                slide.setAttribute("aria-label", item.title);
+                slide.innerHTML = `
+                    <div class="pulse-line" aria-hidden="true"></div>
+                    <header class="header reveal">
+                        <div>
+                            <p class="kicker" contenteditable="false">付款情境 ${String(index + 1).padStart(2, "0")}｜${item.meta}</p>
+                            <h1 contenteditable="false">活動費用支付申請<br>模擬情境題</h1>
+                        </div>
+                    </header>
+                    <div class="scenario-layout reveal">
+                        <section>
+                            <div class="scenario-index">${String(index + 1).padStart(2, "0")}</div>
+                            <h2 contenteditable="false">${item.title}</h2>
+                            <p class="scenario-lead" contenteditable="false">${item.lead}</p>
+                        </section>
+                        <section class="panel scenario-detail">
+                            <div class="metric-row">
+                                <div class="metric">
+                                    <small>金額級距</small>
+                                    <strong contenteditable="false">${item.amount}</strong>
+                                </div>
+                                <div class="metric">
+                                    <small>付款方式</small>
+                                    <strong contenteditable="false">${item.payment}</strong>
+                                </div>
+                            </div>
+                            <ul class="detail-list">
+                                ${item.points.map((point) => `<li contenteditable="false">${point}</li>`).join("")}
+                            </ul>
+                            <div class="risk-chip" contenteditable="false">${item.risk}</div>
+                        </section>
+                    </div>
+                    <div class="page-count" contenteditable="false">${String(index + 3).padStart(2, "0")} / 11</div>
+                `;
+                stage.appendChild(slide);
+            });
+        }
+
+        function renderQaSlide() {
+            const stage = document.getElementById("deckStage");
+            const slide = document.createElement("section");
+            slide.className = "slide qa-slide";
+            slide.setAttribute("aria-label", "Q&A");
+            slide.innerHTML = `
+                <h1 class="qa-title reveal" contenteditable="false">Q&A</h1>
+                <div class="page-count" contenteditable="false">11 / 11</div>
+            `;
+            stage.appendChild(slide);
+        }
+
+        /* === FIXED STAGE SCALING === */
+        class SlidePresentation {
+            constructor() {
+                this.stage = document.getElementById("deckStage");
+                this.slides = Array.from(document.querySelectorAll(".slide"));
+                this.currentSlide = 0;
+                this.setupStageScale();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.showSlide(0);
+            }
+
+            setupStageScale() {
+                const scale = () => {
+                    const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * factor) / 2;
+                    const y = (window.innerHeight - 1080 * factor) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+                };
+                scale();
+                window.addEventListener("resize", scale);
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener("keydown", (event) => {
+                    if (event.target.getAttribute("contenteditable") === "true") return;
+                    if (["ArrowRight", "ArrowDown", " ", "PageDown"].includes(event.key)) {
+                        event.preventDefault();
+                        this.showSlide(this.currentSlide + 1);
+                    }
+                    if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
+                        event.preventDefault();
+                        this.showSlide(this.currentSlide - 1);
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let startY = 0;
+                window.addEventListener("touchstart", (event) => {
+                    startY = event.touches[0].clientY;
+                }, { passive: true });
+                window.addEventListener("touchend", (event) => {
+                    const deltaY = startY - event.changedTouches[0].clientY;
+                    if (Math.abs(deltaY) < 40) return;
+                    this.showSlide(deltaY > 0 ? this.currentSlide + 1 : this.currentSlide - 1);
+                });
+            }
+
+            showSlide(index) {
+                const nextIndex = Math.max(0, Math.min(index, this.slides.length - 1));
+                this.currentSlide = nextIndex;
+                this.slides.forEach((slide, slideIndex) => {
+                    slide.classList.toggle("active", slideIndex === nextIndex);
+                    slide.classList.toggle("visible", slideIndex === nextIndex);
+                });
+                if (this.slides[nextIndex].classList.contains("hero-slide")) runHeroAnimation();
+                this.updateNavButtons();
+            }
+
+            updateNavButtons() {
+                document.getElementById("prevSlide").disabled = this.currentSlide === 0;
+                document.getElementById("nextSlide").disabled = this.currentSlide === this.slides.length - 1;
+            }
+        }
+
+        /* === INLINE EDITOR === */
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.editables = Array.from(document.querySelectorAll("[contenteditable]"));
+                this.restore();
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.getElementById("editToggle").classList.toggle("active", this.isActive);
+                this.editables.forEach((node) => {
+                    node.setAttribute("contenteditable", this.isActive ? "true" : "false");
+                });
+                if (!this.isActive) this.save();
+            }
+
+            save() {
+                const payload = this.editables.map((node) => node.innerHTML);
+                localStorage.setItem("welfarePaymentDeckEdits", JSON.stringify(payload));
+            }
+
+            restore() {
+                const saved = localStorage.getItem("welfarePaymentDeckEdits");
+                if (!saved) return;
+                try {
+                    JSON.parse(saved).forEach((html, index) => {
+                        if (this.editables[index]) this.editables[index].innerHTML = html;
+                    });
+                } catch (error) {
+                    localStorage.removeItem("welfarePaymentDeckEdits");
+                }
+            }
+        }
+
+        /* === FILE DOWNLOADS === */
+        function downloadCurrentHtml() {
+            const html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "職福會長期適用付款制度_一頁式互動簡報.html";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function runHeroAnimation() {
+            if (!window.gsap) return;
+            gsap.killTweensOf([".hero-title", ".hero-ring", ".hero-grid"]);
+            gsap.set(".hero-title", { autoAlpha: 0, y: 32, scale: 0.92, filter: "blur(12px)" });
+            gsap.set(".hero-ring", { autoAlpha: 0, scale: 0.86, rotation: -24 });
+            gsap.set(".hero-grid", { autoAlpha: 0 });
+            const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+            timeline
+                .to(".hero-grid", { autoAlpha: 0.45, duration: 0.6 }, 0)
+                .to(".hero-ring", { autoAlpha: 1, scale: 1, rotation: 0, duration: 1.1 }, 0.12)
+                .to(".hero-title", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.9 }, 0.38)
+                .to(".hero-title", { textShadow: "0 0 38px rgba(255, 208, 92, 0.88), 0 10px 52px rgba(0, 0, 0, 0.62)", duration: 0.9, repeat: -1, yoyo: true }, 1.1);
+        }
+
+        renderScenarioSlides();
+        renderQaSlide();
+        const deck = new SlidePresentation();
+        const editor = new InlineEditor();
+        document.getElementById("prevSlide").addEventListener("click", () => deck.showSlide(deck.currentSlide - 1));
+        document.getElementById("nextSlide").addEventListener("click", () => deck.showSlide(deck.currentSlide + 1));
+
+        const hotzone = document.querySelector(".edit-hotzone");
+        const editToggle = document.getElementById("editToggle");
+        let hideTimeout = null;
+
+        hotzone.addEventListener("mouseenter", () => {
+            clearTimeout(hideTimeout);
+            editToggle.classList.add("show");
+        });
+        hotzone.addEventListener("mouseleave", () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove("show");
+            }, 400);
+        });
+        editToggle.addEventListener("mouseenter", () => clearTimeout(hideTimeout));
+        editToggle.addEventListener("mouseleave", () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove("show");
+            }, 400);
+        });
+        editToggle.addEventListener("click", () => editor.toggleEditMode());
+        hotzone.addEventListener("click", () => editor.toggleEditMode());
+        document.addEventListener("keydown", (event) => {
+            if ((event.key === "e" || event.key === "E") && event.target.getAttribute("contenteditable") !== "true") {
+                editor.toggleEditMode();
+            }
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+                event.preventDefault();
+                editor.save();
+            }
+        });
+    </script>
+</body>
+</html>
